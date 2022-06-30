@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-cyan-700 font-bold text-4xl my-8 ml-8">{{ msg }}</h1>
+    <h1 class="text-cyan-700 font-extrabold text-4xl my-8 ml-8">{{ msg }}</h1>
     <hr />
   </div>
 

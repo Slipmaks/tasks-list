@@ -27,9 +27,9 @@
         <br />
         <input
           class="bg-teal-700 rounded-md mb-4 pl-2 py-1 border-none focus-visible:outline focus-visible:outline-teal-800"
-          v-model="task"
-          @keyup.enter="addToTasks(task, id)"
-          @blur="enableInput(id), (task = '')"
+          @input="setTask($event, id)"
+          @keyup.enter="addToTasks($event, id)"
+          @blur="enableInput(id)"
           v-if="isSelected"
         />
         <ul v-if="items.length">
@@ -45,7 +45,7 @@
 <script setup>
 import { ref } from "vue";
 const listName = ref("");
-const task = ref("");
+// const task = ref("");
 const lists = ref([]);
 
 const addToLists = (name) => {
@@ -56,17 +56,21 @@ const addToLists = (name) => {
     id: newId,
     name: name,
     isSelected: selectStatus,
-    task: task,
+    task: "",
     items: [],
   };
   lists.value.unshift(list);
   listName.value = "";
 };
-
-const addToTasks = (currentTask, listId) => {
+const setTask = (e, listId) => {
   const list = lists.value.find((list) => list.id === listId);
-  list.items.push(currentTask);
-  task.value = "";
+  list.task = e.target.value;
+};
+const addToTasks = (e, listId) => {
+  const list = lists.value.find((list) => list.id === listId);
+  list.items.push(list.task);
+  e.target.value = "";
+  list.task = "";
 };
 
 const enableInput = (listId) => {
