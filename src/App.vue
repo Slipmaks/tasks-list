@@ -7,6 +7,7 @@
   <div>
     <List />
   </div>
+  <user-task-list></user-task-list>
 </template>
 
 <script setup>
