@@ -9,19 +9,16 @@
   </section>
 </template>
 <script setup>
-import { ref } from "vue";
+import { inject, ref } from "vue";
 const emit = defineEmits(["add-task"]);
-
-defineProps({
-  id: Number,
-  title: String,
-  tasks: Array,
-});
+const addToTasks = inject("addToTasks");
+defineProps(["id", "title", "tasks"]);
 
 const userInput = ref("");
 
 const createNewTask = (id) => {
-  emit("add-task", id, userInput.value);
+  // emit("add-task", id, userInput.value);
+  addToTasks(id, userInput.value);
   userInput.value = "";
 };
 </script>

@@ -1,9 +1,6 @@
 <template>
   <!-- Header -->
-  <div class="text-center">
-    <h1 class="text-cyan-700 font-extrabold text-4xl my-8 ml-8">{{ msg }}</h1>
-    <hr />
-  </div>
+  <the-header :msg="msg"></the-header>
 
   <!-- Old list  -->
   <div hidden>
@@ -16,31 +13,25 @@
     v-model="listTitle"
   />
   <button @click="addListToArray">Add list</button>
-  <user-task-list
-    v-for="list in listArray"
-    :key="list.id"
-    :id="list.id"
-    :title="list.title"
-    :tasks="list.tasks"
-    @addTask="addToTasks"
-  ></user-task-list>
+
+  <TaskWrapper :lists="listArray" />
 </template>
 
 <script setup>
-import {
-  onBeforeMount,
-  onMounted,
-  onBeforeUpdate,
-  ref,
-  watch,
-  watchEffect,
-} from "vue";
+import { provide, ref, watch, onMounted } from "vue";
 import List from "./components/List.vue";
+import TaskWrapper from "./components/ListUI/TaskWrapper.vue";
+
 const msg = "Todo list Composition API";
 
 const listTitle = ref("");
 const listArray = ref([]);
 
+onMounted(() => {
+  const storedList = localStorage.getItem("list");
+  console.log("onMounted: ", JSON.parse(storedList));
+  listArray.value = JSON.parse(storedList);
+});
 const addListToArray = () => {
   const newId = listArray.value.length + 1;
   const titleValue = listTitle.value;
@@ -59,15 +50,11 @@ const addToTasks = (listId, task) => {
   console.log(listArray.value);
 };
 
+provide("addToTasks", addToTasks);
+
 watch(listArray.value, (newVal) => {
   const json = JSON.stringify(newVal);
   console.log("watch", json);
   localStorage.setItem("list", json);
 });
-
-// onMounted(() => {
-//   const storedList = localStorage.getItem("list");
-//   console.log("onMounted: ", JSON.parse(storedList));
-//   listArray.value = JSON.parse(storedList);
-// });
 </script>
