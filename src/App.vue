@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { provide, ref, watch, onMounted } from "vue";
+import { provide, ref, watch, onMounted, reactive } from "vue";
 import List from "./components/List.vue";
 import TaskWrapper from "./components/ListUI/TaskWrapper.vue";
 
@@ -28,18 +28,27 @@ const listTitle = ref("");
 const listArray = ref([]);
 
 onMounted(() => {
-  const storedList = localStorage.getItem("list");
-  console.log("onMounted: ", JSON.parse(storedList));
-  listArray.value = JSON.parse(storedList);
+  const storedList = JSON.parse(localStorage.getItem("list"));
+  console.log("onMounted: ", storedList);
+  // const mountedArrayList = [];
+  for (const id in storedList) {
+    listArray.value.push({
+      id: id,
+      title: storedList[id].title,
+      tasks: storedList[id].tasks,
+    });
+  }
+  // listArray.value = mountedArrayList;
 });
+
 const addListToArray = () => {
   const newId = listArray.value.length + 1;
   const titleValue = listTitle.value;
-  const list = {
+  const list = reactive({
     id: newId,
     title: titleValue,
     tasks: [],
-  };
+  });
   listArray.value.push(list);
   listTitle.value = "";
 };
