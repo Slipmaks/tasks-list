@@ -1,8 +1,12 @@
 <template>
-  <div class="text-center">
-    <h1 class="text-cyan-700 font-extrabold text-4xl my-8 ml-8">{{ msg }}</h1>
-    <hr />
+  <div class="text-center bg-gradient-to-r from-green-400 to-blue-500 py-4">
+    <span
+      class="font-extrabold text-transparent text-5xl bg-clip-text bg-gradient-to-l from-sky-300 to-green-300"
+    >
+      {{ msg }}
+    </span>
   </div>
+  <hr class="mb-4" />
 </template>
 
 <script setup>
